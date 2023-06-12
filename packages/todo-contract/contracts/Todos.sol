@@ -51,7 +51,7 @@ contract Todos {
     function updateTask(uint _index, string calldata _task) external {
         require(tasks[_index].owner == msg.sender, "Unauthorized owner");
         
-        Task memory task = tasks[_index];
+        Task storage task = tasks[_index];
         task.task = _task;
 
         emit TaskUpdated(task.id, task.task, task.completed);
@@ -60,7 +60,7 @@ contract Todos {
     function toggleCompleted(uint _index) external {
         require(tasks[_index].owner == msg.sender, "Unauthorized owner");
         
-        Task memory task = tasks[_index];
+        Task storage task = tasks[_index];
         task.completed = !task.completed;
 
         emit TaskToggleCompleted(task.id, task.task, task.completed);
