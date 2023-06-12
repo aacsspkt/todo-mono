@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "build": "hardhat compile",
-    "test": "hardhat test"
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "deploy:bsctest": "hardhat run --network bsc_test scripts/deploy.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
