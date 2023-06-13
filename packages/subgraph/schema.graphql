@@ -1,0 +1,37 @@
+type TaskCreated @entity(immutable: true) {
+  id: Bytes!
+  Todos_id: BigInt! # uint256
+  task: String! # string
+  completed: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TaskDeleted @entity(immutable: true) {
+  id: Bytes!
+  Todos_id: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TaskToggleCompleted @entity(immutable: true) {
+  id: Bytes!
+  Todos_id: BigInt! # uint256
+  task: String! # string
+  completed: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type TaskUpdated @entity(immutable: true) {
+  id: Bytes!
+  Todos_id: BigInt! # uint256
+  task: String! # string
+  completed: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
