@@ -1,72 +1,44 @@
+import { Task } from '../generated/schema';
 import {
   TaskCreated as TaskCreatedEvent,
   TaskDeleted as TaskDeletedEvent,
   TaskToggleCompleted as TaskToggleCompletedEvent,
-  TaskUpdated as TaskUpdatedEvent
-} from "../generated/Todos/Todos"
-import {
-  TaskCreated,
-  TaskDeleted,
-  TaskToggleCompleted,
-  TaskUpdated
-} from "../generated/schema"
+  TaskUpdated as TaskUpdatedEvent,
+} from '../generated/Todos/Todos';
 
 export function handleTaskCreated(event: TaskCreatedEvent): void {
-  let entity = new TaskCreated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.Todos_id = event.params.id
-  entity.task = event.params.task
-  entity.completed = event.params.completed
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+	let entity = new Task(event.params.id.toString());
+	entity.task = event.params.task;
+	entity.completed = event.params.completed;
+	entity.owner = event.transaction.from;
+	entity.deleted = false;
+	entity.save();
 }
 
 export function handleTaskDeleted(event: TaskDeletedEvent): void {
-  let entity = new TaskDeleted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.Todos_id = event.params.id
-
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+	let entity = Task.load(event.params.id.toString());
+	
+  if (entity) {
+		entity.deleted = true;
+		entity.save();
+	}
 }
 
-export function handleTaskToggleCompleted(
-  event: TaskToggleCompletedEvent
-): void {
-  let entity = new TaskToggleCompleted(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.Todos_id = event.params.id
-  entity.task = event.params.task
-  entity.completed = event.params.completed
+export function handleTaskToggleCompleted(event: TaskToggleCompletedEvent): void {
+	let entity = Task.load(event.params.id.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+	if (entity) {
+		entity.completed = event.params.completed;
+		entity.save();
+	}
 }
 
 export function handleTaskUpdated(event: TaskUpdatedEvent): void {
-  let entity = new TaskUpdated(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
-  )
-  entity.Todos_id = event.params.id
-  entity.task = event.params.task
-  entity.completed = event.params.completed
+	let entity = Task.load(event.params.id.toString());
 
-  entity.blockNumber = event.block.number
-  entity.blockTimestamp = event.block.timestamp
-  entity.transactionHash = event.transaction.hash
-
-  entity.save()
+	if (entity) {
+		entity.task = event.params.task;
+		entity.completed = event.params.completed;
+		entity.save();
+	}
 }

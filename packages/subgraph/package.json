@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ todo",
-    "create-local": "graph create --node http://localhost:8020/ todo",
-    "remove-local": "graph remove --node http://localhost:8020/ todo",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 todo",
+    "deploy": "graph deploy --studio todos",
+    "create-local": "graph create --node http://localhost:8020/ todos",
+    "remove-local": "graph remove --node http://localhost:8020/ todos",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 todos",
     "test": "graph test"
   },
   "dependencies": {
