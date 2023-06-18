@@ -4,10 +4,10 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --studio todos",
-    "create-local": "graph create --node http://localhost:8020/ todos",
-    "remove-local": "graph remove --node http://localhost:8020/ todos",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 todos",
+    "deploy": "graph deploy --product hosted-service aacsspkt/todo",
+    "create-local": "graph create --node http://localhost:8020/ todo",
+    "remove-local": "graph remove --node http://localhost:8020/ todo",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 todo",
     "test": "graph test"
   },
   "dependencies": {
