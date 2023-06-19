@@ -6,7 +6,7 @@ import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { Todos } from '../typechain-types';
 import { parseTodo } from './utils';
 
-describe("Todos updation test", () => {
+describe("Todos deletion test", () => {
 	let todos: Todos;
 	let owner: HardhatEthersSigner;
 
