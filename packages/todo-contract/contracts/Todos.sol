@@ -11,16 +11,18 @@ contract Todos {
     // Task[] private tasks;
     mapping (address => Task[]) tasks;
 
-    event TaskCreated(string task, bool completed, address owner);
-    event TaskToggleCompleted(string task, bool completed, address owner);
+    event TaskCreated(uint256 id, string task, bool completed, address owner);
+    event TaskToggleCompleted(uint256 id, string task, bool completed, address owner);
     event TaskDeleted(uint256 id);
 
     function addTask(string calldata _task) external {
         address owner = msg.sender;
         Task memory task = Task({task: _task, completed: false});
+        uint256 index = tasks[owner].length;
+        
         tasks[owner].push(task);
 
-        emit TaskCreated(task.task, task.completed, owner);
+        emit TaskCreated(index, task.task, task.completed, owner);
     }
 
     function getTasks() external view returns (Task[] memory result) {
@@ -45,7 +47,7 @@ contract Todos {
         Task storage task = taskOwned[_index];
         task.completed = !task.completed;
 
-        emit TaskToggleCompleted(task.task, task.completed, owner);
+        emit TaskToggleCompleted(_index, task.task, task.completed, owner);
     }
 
     function deleteTask(uint _index) external {
