@@ -24,19 +24,12 @@ import type {
 } from "./common";
 
 export declare namespace Todos {
-  export type TaskStruct = {
-    id: BigNumberish;
+  export type TaskStruct = { task: string; completed: boolean };
+
+  export type TaskStructOutput = [task: string, completed: boolean] & {
     task: string;
     completed: boolean;
-    owner: AddressLike;
   };
-
-  export type TaskStructOutput = [
-    id: bigint,
-    task: string,
-    completed: boolean,
-    owner: string
-  ] & { id: bigint; task: string; completed: boolean; owner: string };
 }
 
 export interface TodosInterface extends Interface {
@@ -47,7 +40,6 @@ export interface TodosInterface extends Interface {
       | "getTask"
       | "getTasks"
       | "toggleCompleted"
-      | "updateTask"
   ): FunctionFragment;
 
   getEvent(
@@ -55,7 +47,6 @@ export interface TodosInterface extends Interface {
       | "TaskCreated"
       | "TaskDeleted"
       | "TaskToggleCompleted"
-      | "TaskUpdated"
   ): EventFragment;
 
   encodeFunctionData(functionFragment: "addTask", values: [string]): string;
@@ -72,10 +63,6 @@ export interface TodosInterface extends Interface {
     functionFragment: "toggleCompleted",
     values: [BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "updateTask",
-    values: [BigNumberish, string]
-  ): string;
 
   decodeFunctionResult(functionFragment: "addTask", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "deleteTask", data: BytesLike): Result;
@@ -85,7 +72,6 @@ export interface TodosInterface extends Interface {
     functionFragment: "toggleCompleted",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "updateTask", data: BytesLike): Result;
 }
 
 export namespace TaskCreatedEvent {
@@ -126,31 +112,6 @@ export namespace TaskDeletedEvent {
 }
 
 export namespace TaskToggleCompletedEvent {
-  export type InputTuple = [
-    id: BigNumberish,
-    task: string,
-    completed: boolean,
-    owner: AddressLike
-  ];
-  export type OutputTuple = [
-    id: bigint,
-    task: string,
-    completed: boolean,
-    owner: string
-  ];
-  export interface OutputObject {
-    id: bigint;
-    task: string;
-    completed: boolean;
-    owner: string;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace TaskUpdatedEvent {
   export type InputTuple = [
     id: BigNumberish,
     task: string,
@@ -236,12 +197,6 @@ export interface Todos extends BaseContract {
     "nonpayable"
   >;
 
-  updateTask: TypedContractMethod<
-    [_index: BigNumberish, _task: string],
-    [void],
-    "nonpayable"
-  >;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -265,13 +220,6 @@ export interface Todos extends BaseContract {
   getFunction(
     nameOrSignature: "toggleCompleted"
   ): TypedContractMethod<[_index: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "updateTask"
-  ): TypedContractMethod<
-    [_index: BigNumberish, _task: string],
-    [void],
-    "nonpayable"
-  >;
 
   getEvent(
     key: "TaskCreated"
@@ -293,13 +241,6 @@ export interface Todos extends BaseContract {
     TaskToggleCompletedEvent.InputTuple,
     TaskToggleCompletedEvent.OutputTuple,
     TaskToggleCompletedEvent.OutputObject
-  >;
-  getEvent(
-    key: "TaskUpdated"
-  ): TypedContractEvent<
-    TaskUpdatedEvent.InputTuple,
-    TaskUpdatedEvent.OutputTuple,
-    TaskUpdatedEvent.OutputObject
   >;
 
   filters: {
@@ -334,17 +275,6 @@ export interface Todos extends BaseContract {
       TaskToggleCompletedEvent.InputTuple,
       TaskToggleCompletedEvent.OutputTuple,
       TaskToggleCompletedEvent.OutputObject
-    >;
-
-    "TaskUpdated(uint256,string,bool,address)": TypedContractEvent<
-      TaskUpdatedEvent.InputTuple,
-      TaskUpdatedEvent.OutputTuple,
-      TaskUpdatedEvent.OutputObject
-    >;
-    TaskUpdated: TypedContractEvent<
-      TaskUpdatedEvent.InputTuple,
-      TaskUpdatedEvent.OutputTuple,
-      TaskUpdatedEvent.OutputObject
     >;
   };
 }
