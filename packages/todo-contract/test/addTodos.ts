@@ -7,14 +7,14 @@ import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { Todos } from '../typechain-types';
 import { parseTodo } from './utils';
 
-dotenv.config()
+dotenv.config();
 
 describe("Todos addition test", () => {
 	let todos: Todos;
-	let owner: HardhatEthersSigner; 
+	let owner: HardhatEthersSigner;
 	let anotherOwner: HardhatEthersSigner;
-	
-	before(async ()=> {
+
+	before(async () => {
 		[owner, anotherOwner] = await ethers.getSigners();
 		// console.log("owner:", await owner.getAddress());
 		// console.log("another owner:", await anotherOwner.getAddress());
@@ -34,34 +34,46 @@ describe("Todos addition test", () => {
 			expect(tasks.length).to.equal(1);
 
 			const expected = {
-				id: 0n,
 				task: "This is task 1",
 				completed: false,
-				owner: await owner.getAddress()
-			}
+			};
 
 			expect(parseTodo(tasks[0])).to.deep.equal(expected);
 		});
 	});
 
-	describe("Add task with another user", ()=> {
-		it("also adds task", async ()=> {
+	describe("Add task with another user", () => {
+		it("also adds task", async () => {
 			todos = todos.connect(anotherOwner);
 			let tx = await todos.addTask("This is also task 1");
 			let res = await tx.wait();
+			let tx1 = await todos.addTask("This is also task 2");
+			let res1 = await tx1.wait();
+			let tx2 = await todos.addTask("This is also task 3");
+			let res2 = await tx2.wait();
 			let tasks = await todos.getTasks();
-			// console.log(tasks.map(task => parseTodo(task)));
+			console.log(tasks.map((task) => parseTodo(task)));
 
-			expect(tasks.length).to.equal(1);
+			expect(tasks.length).to.equal(3);
 
-			const expected = {
-				id: 1n,
-				task: "This is also task 1",
-				completed: false,
-				owner: await anotherOwner.getAddress()
-			}
+			const expected = [
+				{
+					task: "This is also task 1",
+					completed: false,
+				},
+				{
+					task: "This is also task 2",
+					completed: false,
+				},
+				{
+					task: "This is also task 3",
+					completed: false,
+				},
+			];
 
-			expect(parseTodo(tasks[0])).to.deep.equal(expected);
-		})
-	})
+			expect(parseTodo(tasks[0])).to.deep.equal(expected[0]);
+			expect(parseTodo(tasks[1])).to.deep.equal(expected[1]);
+			expect(parseTodo(tasks[2])).to.deep.equal(expected[2]);
+		});
+	});
 });

@@ -41,28 +41,20 @@ describe("Todos deletion test", () => {
 
 			const expected = [
 				{
-					id: 0n,
 					task: "This is task 1",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 				{
-					id: 1n,
 					task: "This is task 2",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 				{
-					id: 2n,
 					task: "This is task 3",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 				{
-					id: 3n,
 					task: "This is task 4",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 			];
 
@@ -72,7 +64,8 @@ describe("Todos deletion test", () => {
 
 	describe("Delete task", () => {
 		it("deletes task", async () => {
-			let tx = await todos.deleteTask(0n);
+			const index = 0n;
+			let tx = await todos.deleteTask(index);
 			let res = await tx.wait();
 			let tasks = await todos.getTasks();
 
@@ -80,22 +73,16 @@ describe("Todos deletion test", () => {
 
 			const expected = [
 				{
-					id: 1n,
 					task: "This is task 2",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 				{
-					id: 2n,
 					task: "This is task 3",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 				{
-					id: 3n,
 					task: "This is task 4",
 					completed: false,
-					owner: await owner.getAddress(),
 				},
 			];
 

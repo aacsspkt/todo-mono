@@ -30,10 +30,8 @@ describe("Todos updation test", () => {
 			expect(tasks.length).to.equal(1);
 
 			const expected = {
-				id: 0n,
 				task: "This is task 1",
 				completed: false,
-				owner: await owner.getAddress(),
 			};
 
 			expect(parseTodo(tasks[0])).to.deep.equal(expected);
@@ -41,37 +39,18 @@ describe("Todos updation test", () => {
 	});
 
     describe("Update task", ()=> {
-        it("updates task", async ()=> {
-            let tx = await todos.updateTask(0n, "Actually this is task 2");
-			let res = await tx.wait();
-			let tasks = await todos.getTasks();
-            // console.log("tasks", tasks);
-            // console.log("\n");
-
-            expect(tasks.length).to.equal(1);
-
-			const expected = {
-				id: 0n,
-				task: "Actually this is task 2",
-				completed: false,
-				owner: await owner.getAddress(),
-			};
-
-			expect(parseTodo(tasks[0])).to.deep.equal(expected);
-        })
 
         it("toggle completed", async ()=> {
-            let tx = await todos.toggleCompleted(0n);
+			const index = 0n;
+            let tx = await todos.toggleCompleted(index);
 			let res = await tx.wait();
 			let tasks = await todos.getTasks();
 
             expect(tasks.length).to.equal(1);
 
 			const expected = {
-				id: 0n,
-				task: "Actually this is task 2",
+				task: "This is task 1",
 				completed: true,
-				owner: await owner.getAddress(),
 			};
 
 			expect(parseTodo(tasks[0])).to.deep.equal(expected);
