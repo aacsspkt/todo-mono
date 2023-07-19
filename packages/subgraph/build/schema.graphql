@@ -1,7 +1,0 @@
-type Task @entity(immutable: false) {
-  id: ID!
-  task: String!
-  completed: Boolean!
-  owner: Bytes!
-  deleted: Boolean!
-}
